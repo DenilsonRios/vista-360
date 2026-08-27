@@ -255,6 +255,15 @@ src/main/java/com/test_icesi/vista_360
   la clave primaria.
 - **Resource Server + autorización a nivel de recurso** separada en `AccessControlService`,
   no dispersa en el controlador.
+- **Sin interfaz sobre las clases `@Service` (decisión, no omisión).** Una interfaz con una
+  única implementación y la misma firma solo añade indirección (más archivos, navegación
+  peor) sin ganar nada: Spring proxya clases concretas con CGLIB y Mockito mockea clases.
+  El límite donde la implementación sí puede variar —el acceso a datos— **ya está detrás de
+  interfaces**: los repositorios de Spring Data (`StudentRepository`, `EnrollmentRepository`,
+  …). Ese es el *puerto* real: si la proyección académica pasara a alimentarse del ERP
+  (supuesto S6), se sustituye el adaptador de repositorio, no el servicio. Se introduciría
+  una interfaz de servicio el día que haya una segunda implementación o un contrato
+  publicado a otros módulos.
 - **Flyway** para el esquema; migraciones separadas de los datos semilla (los datos de
   ejemplo no se cargan en el perfil `prod`).
 - **DTOs `record`** desacoplados de las entidades; sin exponer entidades JPA en la API.
