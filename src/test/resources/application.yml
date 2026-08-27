@@ -1,0 +1,24 @@
+spring:
+  cloud:
+    config:
+      enabled: false
+
+  datasource:
+    url: jdbc:h2:mem:vista360-test;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    locations: classpath:db/migration,classpath:db/seed
+    encoding: UTF-8
+
+app:
+  security:
+    jwt:
+      hmac-secret: secreto-de-pruebas-0123456789-0123456789-0123456789
