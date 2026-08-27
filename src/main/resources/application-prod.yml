@@ -1,0 +1,27 @@
+# Perfil de producción: PostgreSQL + validación de JWT contra la plataforma de identidad.
+# Uso:  java -jar vista-360.jar --spring.profiles.active=prod
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/vista360}
+    username: ${DB_USERNAME:vista360}
+    password: ${DB_PASSWORD:vista360}
+    driver-class-name: org.postgresql.Driver
+
+  h2:
+    console:
+      enabled: false
+
+  flyway:
+    # Sin datos semilla: en producción la proyección se alimenta del ERP.
+    locations: classpath:db/migration
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${OIDC_ISSUER_URI}
+
+app:
+  security:
+    jwt:
+      strategy: issuer

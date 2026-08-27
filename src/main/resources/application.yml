@@ -2,15 +2,22 @@ spring:
   application:
     name: vista-360
 
-  # La configuración centralizada del ecosistema se resuelve por entorno; en local se apaga.
+  # La configuración centralizada del ecosistema se resuelve por entorno; aquí se apaga.
   cloud:
     config:
       enabled: false
 
+  # Por defecto el servicio arranca con una base de datos H2 en memoria y datos de
+  # ejemplo, sin necesidad de instalar nada. Para PostgreSQL: perfil 'prod' (ver README).
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/vista360}
-    username: ${DB_USERNAME:vista360}
-    password: ${DB_PASSWORD:vista360}
+    url: jdbc:h2:mem:vista360;DB_CLOSE_DELAY=-1;MODE=PostgreSQL
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+
+  h2:
+    console:
+      enabled: true
 
   jpa:
     open-in-view: false
@@ -22,16 +29,16 @@ spring:
           time_zone: UTC
 
   flyway:
-    locations: classpath:db/migration
+    locations: classpath:db/migration,classpath:db/seed
     encoding: UTF-8
 
 app:
   security:
     jwt:
-      # Validación de JWT por secreto simétrico (HS256).
-      # En producción se sustituye por la validación contra la plataforma de identidad
-      # definiendo la variable OIDC_ISSUER_URI (ver application-prod.yml de ejemplo en el README).
-      hmac-secret: ${JWT_HMAC_SECRET:cambiar-en-produccion-clave-de-desarrollo-0123456789}
+      # 'hmac' -> valida el JWT con un secreto simétrico (desarrollo/pruebas).
+      # 'issuer' -> valida contra la plataforma de identidad (perfil 'prod').
+      strategy: hmac
+      hmac-secret: ${JWT_HMAC_SECRET:clave-solo-para-desarrollo-local-no-usar-en-produccion-0123456789}
 
 management:
   endpoints:

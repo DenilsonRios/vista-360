@@ -136,14 +136,15 @@ Datos de ejemplo en [`src/main/resources/db/seed/V900__seed_sample_data.sql`](sr
 
 ## 4. Cómo ejecutar
 
-### Local (H2 en memoria, sin instalar nada)
+### Por defecto — H2 en memoria, sin instalar nada
 
 ```bash
-./gradlew bootRun --args='--spring.profiles.active=local'
+./gradlew bootRun
 ```
 
-Arranca en `http://localhost:8080` con el esquema y los datos de ejemplo ya cargados
-(consola H2 en `/h2-console`, JDBC URL `jdbc:h2:mem:vista360`).
+Arranca en `http://localhost:8080` con el esquema y los datos de ejemplo ya cargados.
+No requiere base de datos externa ni proveedor OIDC. Consola H2 en `/h2-console`
+(JDBC URL `jdbc:h2:mem:vista360`, usuario `sa`, sin contraseña).
 
 ### Pruebas
 
@@ -151,27 +152,28 @@ Arranca en `http://localhost:8080` con el esquema y los datos de ejemplo ya carg
 ./gradlew test
 ```
 
-### Producción (PostgreSQL + plataforma de identidad)
+### Perfil `prod` — PostgreSQL + plataforma de identidad
+
+```bash
+java -jar build/libs/vista-360-0.0.1-SNAPSHOT.jar --spring.profiles.active=prod
+```
 
 Variables de entorno:
 
-```bash
-DB_URL=jdbc:postgresql://<host>:5432/vista360
-DB_USERNAME=...
-DB_PASSWORD=...
-OIDC_ISSUER_URI=https://identidad.universidad.edu/realms/vista360   # activa validación real de JWT
-JWT_HMAC_SECRET=                                                     # dejar vacío en producción
-```
+| Variable | Descripción |
+|---|---|
+| `DB_URL`, `DB_USERNAME`, `DB_PASSWORD` | Conexión a PostgreSQL. |
+| `OIDC_ISSUER_URI` | Emisor OIDC. El perfil `prod` valida el JWT contra sus llaves públicas (no usa secreto simétrico). |
 
-Con `OIDC_ISSUER_URI` definido, Spring valida el JWT contra las llaves públicas del emisor
-(no se usa el secreto simétrico).
+En `prod` **no** se cargan los datos de ejemplo (`spring.flyway.locations` solo incluye `db/migration`).
 
 ---
 
-## 5. Probar el endpoint en local
+## 5. Probar el endpoint
 
-El perfil `local` valida los JWT con un secreto simétrico (HS256) **solo para desarrollo**.
-Tokens de ejemplo ya firmados (rol estudiante y rol asesor, vigencia ~10 años):
+Por defecto los JWT se validan con un secreto simétrico (HS256) **solo apto para desarrollo**
+(`app.security.jwt.strategy: hmac`). Tokens de ejemplo ya firmados (rol estudiante y rol
+asesor, vigencia ~10 años):
 
 <details>
 <summary>STUDENT_TOKEN (estudiante A00123456)</summary>
@@ -205,7 +207,7 @@ curl -i -H "Authorization: Bearer $TOKEN" \
   http://localhost:8080/api/v1/students/A00987654/academic-record
 ```
 
-Generar tokens nuevos (el secreto está en `application-local.yml`):
+Generar tokens nuevos (el secreto está en `application.yml`, clave `app.security.jwt.hmac-secret`):
 
 ```python
 import hmac, hashlib, base64, json, time
@@ -253,13 +255,14 @@ src/main/java/com/test_icesi/vista_360
   la clave primaria.
 - **Resource Server + autorización a nivel de recurso** separada en `AccessControlService`,
   no dispersa en el controlador.
-- **Flyway** para el esquema; migraciones separadas de los datos semilla (los datos solo se
-  cargan en los perfiles `local`/`test`).
+- **Flyway** para el esquema; migraciones separadas de los datos semilla (los datos de
+  ejemplo no se cargan en el perfil `prod`).
 - **DTOs `record`** desacoplados de las entidades; sin exponer entidades JPA en la API.
 - **Errores RFC 9457** homogéneos vía `@RestControllerAdvice`.
 - **Consulta única con `join fetch`** para evitar el problema N+1.
 - **`open-in-view: false`** y `@Transactional(readOnly = true)` en la consulta.
-- **Perfiles**: `default` (PostgreSQL + OIDC real) vs `local` (H2 + JWT simétrico).
+- **Perfiles**: por defecto (H2 + JWT simétrico, arranca sin dependencias) vs `prod`
+  (PostgreSQL + OIDC real).
 - **Pruebas por capa**: unitarias del servicio y de la autorización (Mockito),
   de repositorio (`@DataJpaTest` sobre H2 + Flyway) y de API (`@WebMvcTest` con seguridad).
 - **Versionado**: commits pequeños con Conventional Commits.
@@ -291,8 +294,8 @@ src/main/java/com/test_icesi/vista_360
 - **OpenAPI** (`springdoc`) para publicar el contrato.
 - **Observabilidad**: trazado distribuido con OpenTelemetry y `correlation-id` (Parte 4.A).
 - **Paginación/caché** si el volumen por estudiante creciera.
-- Integración real con la plataforma de identidad (hoy validada con los tests y el perfil
-  `local`).
+- Integración real con la plataforma de identidad (hoy validada con los tests y con el
+  perfil por defecto de JWT simétrico).
 
 ---
 

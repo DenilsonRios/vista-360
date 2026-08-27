@@ -14,13 +14,14 @@ import org.springframework.security.oauth2.jwt.NimbusJwtDecoder;
 /**
  * Decodificador de JWT basado en secreto simétrico (HS256).
  *
- * <p>Se activa únicamente cuando se define {@code app.security.jwt.hmac-secret}, lo que
- * permite ejecutar y probar el servicio en local sin un proveedor OIDC real. En entornos
- * reales se define {@code spring.security.oauth2.resourceserver.jwt.issuer-uri} y Spring
- * autoconfigura el decodificador contra las llaves públicas de la plataforma de identidad.
+ * <p>Se activa con {@code app.security.jwt.strategy=hmac} (valor por defecto), lo que
+ * permite ejecutar y probar el servicio sin un proveedor OIDC real. En el perfil
+ * {@code prod} la estrategia es {@code issuer}: se define
+ * {@code spring.security.oauth2.resourceserver.jwt.issuer-uri} y Spring autoconfigura el
+ * decodificador contra las llaves públicas de la plataforma de identidad.
  */
 @Configuration
-@ConditionalOnProperty(name = "app.security.jwt.hmac-secret")
+@ConditionalOnProperty(name = "app.security.jwt.strategy", havingValue = "hmac", matchIfMissing = true)
 public class HmacJwtConfig {
 
     @Bean
