@@ -1,0 +1,672 @@
+<meta charset="utf-8">
+<title>Arquitectura Vista 360°</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap">
+
+<style>
+  :root {
+    --ground:#f4f7f4;
+    --surface:#ffffff;
+    --surface-2:#eaefe9;
+    --ink:#171b18;
+    --ink-soft:#57615a;
+    --line:#d6ded6;
+    --accent:#0b6d5c;
+    --accent-wash:#e6f1ed;
+    --shadow:0 1px 2px rgba(20,40,32,.05), 0 12px 32px -12px rgba(20,40,32,.12);
+    --measure:43rem;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground:#0e110f;
+      --surface:#161a17;
+      --surface-2:#1b211d;
+      --ink:#e7ece7;
+      --ink-soft:#97a39a;
+      --line:#29312c;
+      --accent:#5ac9b1;
+      --accent-wash:#153029;
+      --shadow:0 1px 2px rgba(0,0,0,.3), 0 14px 40px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground:#0e110f;
+    --surface:#161a17;
+    --surface-2:#1b211d;
+    --ink:#e7ece7;
+    --ink-soft:#97a39a;
+    --line:#29312c;
+    --accent:#5ac9b1;
+    --accent-wash:#153029;
+    --shadow:0 1px 2px rgba(0,0,0,.3), 0 14px 40px -14px rgba(0,0,0,.6);
+  }
+
+  * { box-sizing:border-box; }
+  html { -webkit-text-size-adjust:100%; }
+  body {
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:"IBM Plex Sans", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    font-size:17px;
+    line-height:1.65;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap { max-width:74rem; margin:0 auto; padding:0 clamp(1.1rem, 4vw, 3rem); }
+  .col { max-width:var(--measure); }
+
+  /* ---- top bar ---- */
+  .topbar {
+    border-bottom:1px solid var(--line);
+    background:var(--ground);
+    position:sticky; top:0; z-index:10;
+  }
+  .topbar .wrap {
+    display:flex; align-items:baseline; justify-content:space-between; gap:1rem;
+    padding-top:.9rem; padding-bottom:.9rem;
+  }
+  .brand { font-family:"Fraunces", Georgia, serif; font-weight:600; font-size:1.05rem; letter-spacing:.01em; }
+  .brand span { color:var(--accent); }
+  .kicker-top { font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:.72rem; letter-spacing:.06em; text-transform:uppercase; color:var(--ink-soft); text-align:right; }
+
+  /* ---- header ---- */
+  header.doc { padding:clamp(2.6rem,7vw,5rem) 0 clamp(1.6rem,4vw,2.6rem); }
+  .eyebrow {
+    font-family:"IBM Plex Mono", ui-monospace, monospace;
+    font-size:.75rem; letter-spacing:.14em; text-transform:uppercase;
+    color:var(--accent); margin:0 0 1rem;
+  }
+  h1 {
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:500; font-size:clamp(2.1rem, 5.5vw, 3.4rem); line-height:1.08;
+    letter-spacing:-.015em; text-wrap:balance; margin:0 0 1.1rem;
+  }
+  .lede { font-size:1.16rem; color:var(--ink-soft); margin:0; }
+
+  /* ---- toc ---- */
+  nav.toc {
+    margin:2.4rem 0 0; padding:1.2rem 1.4rem;
+    border:1px solid var(--line); border-radius:12px; background:var(--surface);
+  }
+  nav.toc p { margin:0 0 .7rem; font-family:"IBM Plex Mono",monospace; font-size:.7rem; letter-spacing:.12em; text-transform:uppercase; color:var(--ink-soft); }
+  nav.toc ol { margin:0; padding:0; list-style:none; display:grid; gap:.35rem; grid-template-columns:repeat(auto-fit, minmax(15rem,1fr)); }
+  nav.toc a { color:var(--ink); text-decoration:none; display:flex; gap:.6rem; align-items:baseline; padding:.15rem 0; }
+  nav.toc a:hover { color:var(--accent); }
+  nav.toc .n { font-family:"IBM Plex Mono",monospace; font-size:.8rem; color:var(--accent); }
+
+  /* ---- sections ---- */
+  section { padding:clamp(2.6rem,6vw,4.2rem) 0; border-top:1px solid var(--line); }
+  section:first-of-type { border-top:0; }
+  .sec-head { margin:0 0 1.6rem; }
+  .sec-num { font-family:"IBM Plex Mono",monospace; font-size:.8rem; letter-spacing:.1em; color:var(--accent); display:block; margin-bottom:.5rem; }
+  h2 {
+    font-family:"Fraunces", Georgia, serif; font-weight:500;
+    font-size:clamp(1.5rem, 3.2vw, 2rem); line-height:1.15; letter-spacing:-.01em;
+    margin:0; text-wrap:balance;
+  }
+  h3 {
+    font-family:"IBM Plex Sans",sans-serif; font-weight:600; font-size:1.05rem;
+    margin:2.4rem 0 .6rem; letter-spacing:.005em;
+  }
+  p { margin:0 0 1.1rem; }
+  p:last-child { margin-bottom:0; }
+  strong { font-weight:600; }
+  a { color:var(--accent); }
+  .mono { font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:.92em; }
+  code {
+    font-family:"IBM Plex Mono", ui-monospace, monospace; font-size:.86em;
+    background:var(--surface-2); padding:.1em .38em; border-radius:5px;
+  }
+
+  /* ---- figures ---- */
+  figure { margin:1.8rem 0 0; }
+  .figframe {
+    border:1px solid var(--line); border-radius:14px; background:var(--surface);
+    box-shadow:var(--shadow); overflow-x:auto;
+  }
+  .figframe > div { min-width:640px; padding:clamp(1rem,3vw,1.8rem); }
+  figure svg { display:block; width:100%; height:auto; color:var(--ink-soft); }
+  figcaption {
+    margin-top:.85rem; font-size:.9rem; color:var(--ink-soft); max-width:var(--measure);
+  }
+  figcaption b { color:var(--ink); font-weight:600; }
+
+  /* svg diagram primitives */
+  .d-box { fill:var(--surface-2); stroke:var(--ink-soft); stroke-opacity:.4; stroke-width:1.3; }
+  .d-box-accent { fill:var(--accent-wash); stroke:var(--accent); stroke-width:1.8; }
+  .d-container { fill:none; stroke:var(--ink-soft); stroke-opacity:.35; stroke-width:1.3; stroke-dasharray:2 5; }
+  .d-t { fill:var(--ink); font-family:"IBM Plex Sans",sans-serif; font-size:13px; }
+  .d-t-sm { fill:var(--ink); font-family:"IBM Plex Sans",sans-serif; font-size:11.5px; }
+  .d-lab { fill:var(--ink-soft); font-family:"IBM Plex Mono",monospace; font-size:10.5px; letter-spacing:.02em; }
+  .d-cap { fill:var(--ink-soft); font-family:"IBM Plex Mono",monospace; font-size:10px; letter-spacing:.1em; text-transform:uppercase; }
+  .d-edge { stroke:var(--ink-soft); stroke-width:1.5; fill:none; }
+  .d-edge-async { stroke:var(--accent); stroke-width:1.6; fill:none; stroke-dasharray:5 4; }
+  .d-life { stroke:var(--line); stroke-width:1.4; stroke-dasharray:3 4; }
+  .mk { fill:var(--ink-soft); }
+  .mk-a { fill:var(--accent); }
+  .d-note-box { fill:var(--accent-wash); stroke:var(--accent); stroke-width:1; }
+  .d-selfnote { fill:var(--surface-2); stroke:var(--line); stroke-width:1; }
+
+  /* ---- tables ---- */
+  .tablewrap { overflow-x:auto; margin:1.6rem 0 0; border:1px solid var(--line); border-radius:12px; }
+  table { border-collapse:collapse; width:100%; font-size:.92rem; min-width:34rem; }
+  th, td { text-align:left; padding:.7rem .9rem; border-bottom:1px solid var(--line); vertical-align:top; }
+  thead th {
+    font-family:"IBM Plex Mono",monospace; font-size:.68rem; letter-spacing:.08em;
+    text-transform:uppercase; color:var(--ink-soft); background:var(--surface-2);
+  }
+  tbody tr:last-child td { border-bottom:0; }
+  td.k { font-weight:600; white-space:nowrap; }
+  td .src { font-family:"IBM Plex Mono",monospace; font-size:.82rem; color:var(--accent); }
+  .tag-async { color:var(--accent); font-weight:600; }
+
+  /* ---- legend row ---- */
+  .legend { display:flex; flex-wrap:wrap; gap:1.4rem 2rem; margin:1.1rem 0 0; font-size:.86rem; color:var(--ink-soft); }
+  .legend span { display:flex; align-items:center; gap:.55rem; }
+  .legend svg { width:34px; height:12px; overflow:visible; }
+  .legend .sw { width:13px; height:13px; border-radius:3px; background:var(--accent-wash); border:1.5px solid var(--accent); display:inline-block; }
+
+  /* ---- callout ---- */
+  .callout {
+    border-left:3px solid var(--accent); background:var(--surface);
+    padding:1rem 1.2rem; border-radius:0 10px 10px 0; margin:1.4rem 0 0;
+    font-size:.96rem;
+  }
+  .callout p { margin:0; }
+
+  footer {
+    border-top:1px solid var(--line); padding:2.4rem 0 4rem;
+    font-size:.88rem; color:var(--ink-soft);
+  }
+  footer a { color:var(--accent); }
+
+  @media (prefers-reduced-motion:no-preference) {
+    html { scroll-behavior:smooth; }
+  }
+  :where(a,summary):focus-visible { outline:2px solid var(--accent); outline-offset:3px; border-radius:3px; }
+</style>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="brand">Vista&nbsp;<span>360°</span> del Estudiante</div>
+    <div class="kicker-top">Prueba técnica · Arquitectura e Innovación</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="doc col">
+    <p class="eyebrow">Parte 1 — Diseño de la solución</p>
+    <h1>Arquitectura de la solución</h1>
+    <p class="lede">
+      Documento breve con el diagrama de arquitectura, el origen de cada dato, cómo se
+      comunican los componentes, y las decisiones y supuestos que sustentan el diseño.
+    </p>
+
+    <nav class="toc">
+      <p>En esta página</p>
+      <ol>
+        <li><a href="#principio"><span class="n">1</span> Principio y alcance</a></li>
+        <li><a href="#diagrama"><span class="n">2</span> Diagrama de arquitectura</a></li>
+        <li><a href="#datos"><span class="n">3</span> De dónde sale cada dato</a></li>
+        <li><a href="#comunicacion"><span class="n">4</span> Cómo se comunican los componentes</a></li>
+        <li><a href="#decisiones"><span class="n">5</span> Decisiones más importantes</a></li>
+        <li><a href="#supuestos"><span class="n">6</span> Supuestos declarados</a></li>
+      </ol>
+    </nav>
+  </header>
+
+  <section id="principio">
+    <div class="sec-head col">
+      <span class="sec-num">§ 1</span>
+      <h2>Principio y alcance</h2>
+    </div>
+    <div class="col">
+      <p>
+        Vista 360° es una <strong>capa propia</strong> sobre el ecosistema existente. No
+        reemplaza sistemas: <strong>lee</strong> los datos de los sistemas fuente y
+        <strong>añade</strong> la información y la funcionalidad de acompañamiento, que hoy
+        no existe en ningún lado.
+      </p>
+      <p>
+        <strong>La vista se compone en el backend, no en el frontend.</strong> Un
+        <span class="mono">Backend&nbsp;for&nbsp;Frontend</span> (BFF) orquesta y agrega la
+        información; el frontend nunca habla directamente con el ERP ni con el LMS. Eso
+        concentra en un solo lugar la composición, la resiliencia y la autorización, y deja
+        al cliente sin conocimiento del ecosistema.
+      </p>
+    </div>
+  </section>
+
+  <section id="diagrama">
+    <div class="sec-head col">
+      <span class="sec-num">§ 2</span>
+      <h2>Diagrama de arquitectura</h2>
+    </div>
+    <div class="col">
+      <p>
+        Tres planos: los <strong>usuarios</strong> y su cliente web; la
+        <strong>plataforma nueva</strong> Vista 360°; y el <strong>ecosistema
+        existente</strong>. El servicio de la Parte 2 &mdash;<span class="mono">Registro
+        Académico</span>&mdash; va resaltado.
+      </p>
+    </div>
+
+    <figure>
+      <div class="figframe"><div>
+        <svg viewBox="0 0 1140 862" role="img" aria-label="Arquitectura de Vista 360°: los usuarios acceden por una SPA a un BFF que orquesta los servicios Perfil 360, Acompañamiento y Registro Académico sobre una base de datos propia; la lectura de datos del ERP y del LMS pasa por la plataforma de integración de forma síncrona, y los cambios y la alimentación del data warehouse fluyen como eventos asíncronos.">
+          <defs>
+            <marker id="ah" viewBox="0 0 10 8" refX="8.5" refY="4" markerWidth="10" markerHeight="8" orient="auto">
+              <polygon points="0 0, 10 4, 0 8" class="mk"/>
+            </marker>
+            <marker id="ah-a" viewBox="0 0 10 8" refX="8.5" refY="4" markerWidth="10" markerHeight="8" orient="auto">
+              <polygon points="0 0, 10 4, 0 8" class="mk-a"/>
+            </marker>
+          </defs>
+
+          <!-- containers -->
+          <rect class="d-container" x="44" y="192" width="1052" height="316" rx="14"/>
+          <text class="d-cap" x="64" y="214">Vista 360° — plataforma nueva</text>
+          <rect class="d-container" x="44" y="536" width="1052" height="262" rx="14"/>
+          <text class="d-cap" x="64" y="556">Ecosistema existente</text>
+
+          <!-- edges (draw before boxes so boxes cover the joins) -->
+          <!-- sync -->
+          <path class="d-edge" marker-end="url(#ah)" d="M455,80 L503,114"/>
+          <path class="d-edge" marker-end="url(#ah)" d="M624,80 L578,114"/>
+          <path class="d-edge" marker-end="url(#ah)" d="M545,164 L545,222"/>
+          <text class="d-lab" x="556" y="197">HTTPS + JWT</text>
+          <path class="d-edge" marker-end="url(#ah)" d="M430,150 L26,150 L26,589 L46,589"/>
+          <text class="d-lab" x="40" y="388" transform="rotate(-90 40 388)">OIDC · Authorization Code + PKCE</text>
+          <path class="d-edge" marker-end="url(#ah)" d="M474,276 L250,330"/>
+          <text class="d-lab" x="250" y="300">REST · mTLS</text>
+          <path class="d-edge" marker-end="url(#ah)" d="M560,276 L560,330"/>
+          <path class="d-edge" marker-end="url(#ah)" d="M672,276 L900,330"/>
+          <path class="d-edge" marker-end="url(#ah)" d="M342,394 L432,560"/>
+          <text class="d-lab" x="372" y="500">API mediada · síncrono</text>
+          <path class="d-edge" marker-end="url(#ah)" d="M472,618 L322,690"/>
+          <path class="d-edge" marker-end="url(#ah)" d="M556,618 L534,690"/>
+          <path class="d-edge" marker-end="url(#ah)" d="M576,394 L606,428"/>
+          <path class="d-edge" marker-end="url(#ah)" d="M858,394 L712,428"/>
+
+          <!-- async -->
+          <path class="d-edge-async" marker-end="url(#ah-a)" d="M332,690 L520,624"/>
+          <text class="d-lab" x="350" y="648" style="fill:var(--accent)">evt: AcademicStandingChanged</text>
+          <path class="d-edge-async" marker-end="url(#ah-a)" d="M510,562 L446,396"/>
+          <text class="d-lab" x="300" y="414" style="fill:var(--accent)">suscripción → alerta temprana</text>
+          <path class="d-edge-async" marker-end="url(#ah-a)" d="M300,476 L470,560"/>
+          <text class="d-lab" x="150" y="524" style="fill:var(--accent)">eventos de dominio (Outbox)</text>
+          <path class="d-edge-async" marker-end="url(#ah-a)" d="M702,618 L878,690"/>
+          <text class="d-lab" x="742" y="650" style="fill:var(--accent)">sink / ELT</text>
+          <path class="d-edge-async" marker-end="url(#ah-a)" d="M350,712 L376,712 L376,530 L648,530 L648,480"/>
+          <text class="d-lab" x="392" y="524" style="fill:var(--accent)">CDC → proyección académica</text>
+
+          <!-- boxes: users -->
+          <rect class="d-box" x="355" y="34" width="150" height="46" rx="23"/>
+          <text class="d-t" x="430" y="62" text-anchor="middle">Estudiante</text>
+          <rect class="d-box" x="540" y="34" width="240" height="46" rx="23"/>
+          <text class="d-t" x="660" y="62" text-anchor="middle">Equipo de acompañamiento</text>
+          <rect class="d-box" x="430" y="118" width="230" height="46" rx="10"/>
+          <text class="d-t" x="545" y="146" text-anchor="middle">Frontend SPA</text>
+
+          <!-- boxes: vista 360 -->
+          <rect class="d-box" x="450" y="228" width="240" height="48" rx="10"/>
+          <text class="d-t" x="570" y="257" text-anchor="middle">API Gateway / BFF</text>
+
+          <rect class="d-box" x="50" y="330" width="300" height="64" rx="10"/>
+          <text class="d-t" x="200" y="357" text-anchor="middle">Servicio Perfil 360</text>
+          <text class="d-t-sm" x="200" y="376" text-anchor="middle" style="fill:var(--ink-soft)">agregador + resiliencia</text>
+
+          <rect class="d-box" x="420" y="330" width="290" height="64" rx="10"/>
+          <text class="d-t" x="565" y="357" text-anchor="middle">Servicio Acompañamiento</text>
+          <text class="d-t-sm" x="565" y="376" text-anchor="middle" style="fill:var(--ink-soft)">fuente de verdad de lo nuevo</text>
+
+          <rect class="d-box-accent" x="790" y="330" width="300" height="64" rx="10"/>
+          <text class="d-t" x="940" y="357" text-anchor="middle">Servicio Registro Académico</text>
+          <text class="d-t-sm" x="940" y="376" text-anchor="middle" style="fill:var(--accent)">Parte 2 · implementado</text>
+
+          <rect class="d-box" x="548" y="430" width="210" height="46" rx="10"/>
+          <text class="d-t" x="653" y="458" text-anchor="middle">BD Vista 360° · PostgreSQL</text>
+
+          <rect class="d-box" x="50" y="430" width="300" height="46" rx="10"/>
+          <text class="d-t-sm" x="200" y="457" text-anchor="middle">Outbox → publicador de eventos</text>
+
+          <!-- boxes: ecosistema -->
+          <rect class="d-box" x="50" y="562" width="300" height="54" rx="10"/>
+          <text class="d-t" x="200" y="586" text-anchor="middle">Plataforma de Identidad</text>
+          <text class="d-t-sm" x="200" y="604" text-anchor="middle" style="fill:var(--ink-soft)">OIDC</text>
+
+          <rect class="d-box" x="410" y="562" width="360" height="54" rx="10"/>
+          <text class="d-t" x="590" y="586" text-anchor="middle">Plataforma de Integración</text>
+          <text class="d-t-sm" x="590" y="604" text-anchor="middle" style="fill:var(--ink-soft)">mediación + broker de eventos</text>
+
+          <rect class="d-box" x="50" y="692" width="300" height="54" rx="10"/>
+          <text class="d-t" x="200" y="716" text-anchor="middle">ERP institucional</text>
+          <text class="d-t-sm" x="200" y="734" text-anchor="middle" style="fill:var(--ink-soft)">on-premise · fuente de verdad</text>
+
+          <rect class="d-box" x="400" y="692" width="240" height="54" rx="10"/>
+          <text class="d-t" x="520" y="716" text-anchor="middle">LMS</text>
+          <text class="d-t-sm" x="520" y="734" text-anchor="middle" style="fill:var(--ink-soft)">cloud</text>
+
+          <rect class="d-box" x="790" y="692" width="300" height="54" rx="10"/>
+          <text class="d-t" x="940" y="723" text-anchor="middle">Data Warehouse</text>
+
+          <!-- legend -->
+          <line x1="60" y1="828" x2="96" y2="828" class="d-edge" marker-end="url(#ah)"/>
+          <text class="d-t-sm" x="104" y="832">síncrono · petición / respuesta</text>
+          <line x1="360" y1="828" x2="396" y2="828" class="d-edge-async" marker-end="url(#ah-a)"/>
+          <text class="d-t-sm" x="404" y="832">asíncrono · evento / CDC</text>
+          <rect class="d-box-accent" x="640" y="820" width="15" height="15" rx="3"/>
+          <text class="d-t-sm" x="664" y="832">componente implementado (Parte 2)</text>
+        </svg>
+      </div></div>
+      <figcaption>
+        <b>Figura 1.</b> El BFF es el único punto de entrada del frontend. Las lecturas
+        puntuales del ERP y del LMS pasan por la Plataforma de Integración de forma
+        <b>síncrona</b>; los cambios relevantes (condición académica), los eventos de
+        dominio de Vista 360° y la alimentación del Data Warehouse viajan como
+        <b>eventos asíncronos</b>. La proyección académica local &mdash;sobre la que se
+        construye el servicio de la Parte 2&mdash; se mantiene al día por CDC/eventos desde
+        el ERP.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section id="datos">
+    <div class="sec-head col">
+      <span class="sec-num">§ 3</span>
+      <h2>Para cada dato: de dónde sale y por qué</h2>
+    </div>
+    <div class="col">
+      <p>
+        Regla general: cada dato se toma de su <strong>fuente de verdad</strong>. Lo que
+        cambia es <em>cómo</em> se trae &mdash;en vivo, con cache, o como proyección
+        alimentada por eventos&mdash; según su volatilidad y su sensibilidad.
+      </p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Dato</th><th>Fuente de verdad</th><th>Cómo lo obtiene Vista 360°</th><th>Por qué así</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="k">Identidad / login</td>
+            <td class="src">Plataforma de Identidad</td>
+            <td>OIDC (Authorization Code + PKCE)</td>
+            <td>Es la fuente y usa estándares abiertos; no se replican credenciales.</td>
+          </tr>
+          <tr>
+            <td class="k">Datos personales</td>
+            <td class="src">ERP</td>
+            <td>API mediada, <span class="mono">on-demand</span> + cache corta</td>
+            <td>Fuente de verdad; cambian poco; toleran cache.</td>
+          </tr>
+          <tr>
+            <td class="k">Datos académicos<br>(matrícula, notas, condición)</td>
+            <td class="src">ERP</td>
+            <td>API <span class="mono">on-demand</span> <strong>+ proyección local</strong> por eventos/CDC</td>
+            <td>Lectura frecuente; la proyección desacopla y habilita analítica y el servicio de la Parte 2.</td>
+          </tr>
+          <tr>
+            <td class="k">Estado financiero</td>
+            <td class="src">ERP</td>
+            <td><strong>API síncrona <span class="mono">on-demand</span>, sin persistir</strong></td>
+            <td>Dato volátil y sensible; el usuario necesita el valor exacto «ahora» (Escenario 3.2.A).</td>
+          </tr>
+          <tr>
+            <td class="k">Actividad en el campus virtual</td>
+            <td class="src">LMS · cloud</td>
+            <td>API del LMS mediada; cache con TTL medio</td>
+            <td>Sistema externo; tolera algo de latencia de frescura.</td>
+          </tr>
+          <tr>
+            <td class="k">Reportes, alertas y solicitudes de acompañamiento</td>
+            <td class="src">Vista 360° — propio</td>
+            <td>Base de datos propia</td>
+            <td>No existen hoy en ningún sistema; son nuevos.</td>
+          </tr>
+          <tr>
+            <td class="k">Asignación asesor ↔ estudiante</td>
+            <td class="src">Vista 360° — propio</td>
+            <td>Base de datos propia (semilla desde RRHH/ERP)</td>
+            <td>Es la base de la autorización del equipo de acompañamiento.</td>
+          </tr>
+          <tr>
+            <td class="k">Alimentación del Data Warehouse</td>
+            <td class="src">Todos los sistemas</td>
+            <td class="tag-async">Eventos + CDC → tópicos → sink (ELT)</td>
+            <td>El DWH no consulta las bases transaccionales ni al revés.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="comunicacion">
+    <div class="sec-head col">
+      <span class="sec-num">§ 4</span>
+      <h2>Cómo se comunican los componentes</h2>
+    </div>
+    <div class="col">
+      <p>
+        Dos estilos, cada uno donde corresponde: <strong>síncrono</strong> para «leer
+        ahora», <strong>asíncrono</strong> para «propagar un cambio». Ni todo REST ni todo
+        eventos.
+      </p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead>
+          <tr><th>Enlace</th><th>Estilo</th><th>Mecanismo y seguridad</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="k">Frontend → BFF</td><td>Síncrono</td><td>REST/HTTPS + JWT de OIDC (token de usuario).</td></tr>
+          <tr><td class="k">BFF → servicios de dominio</td><td>Síncrono</td><td>REST interno (o gRPC), mTLS + token de servicio (<span class="mono">client credentials</span>), red privada.</td></tr>
+          <tr><td class="k">Vista 360° → ERP / LMS</td><td>Síncrono</td><td>API mediada por la Plataforma de Integración. Timeout + circuit breaker + degradación parcial.</td></tr>
+          <tr><td class="k">ERP → Vista 360°</td><td class="tag-async">Asíncrono</td><td>Evento publicado en el broker; Vista 360° se suscribe.</td></tr>
+          <tr><td class="k">Vista 360° → otros procesos / DWH</td><td class="tag-async">Asíncrono</td><td>Transactional Outbox → broker → consumidores + sink. Entrega <span class="mono">at-least-once</span>, idempotencia por <span class="mono">eventId</span>, partición por <span class="mono">studentId</span>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h3>4.1 · Escenario 3.2.A — ver el estado financiero de inmediato</h3>
+    <figure>
+      <div class="figframe"><div>
+        <svg viewBox="0 0 1000 566" role="img" aria-label="Secuencia del escenario 3.2.A: el frontend pide la vista al BFF, que valida y autoriza; el servicio Perfil 360 consulta el estado de cuenta al ERP a través de la plataforma de integración con timeout y circuit breaker, no persiste el saldo, y si el ERP no responde devuelve una respuesta parcial.">
+          <defs>
+            <marker id="s1" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="7" orient="auto"><polygon points="0 0, 10 4, 0 8" class="mk"/></marker>
+            <marker id="s1a" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="7" orient="auto"><polygon points="0 0, 10 4, 0 8" class="mk-a"/></marker>
+          </defs>
+          <g class="d-life">
+            <line x1="70" y1="60" x2="70" y2="524"/>
+            <line x1="240" y1="60" x2="240" y2="524"/>
+            <line x1="430" y1="60" x2="430" y2="524"/>
+            <line x1="620" y1="60" x2="620" y2="524"/>
+            <line x1="800" y1="60" x2="800" y2="524"/>
+            <line x1="940" y1="60" x2="940" y2="524"/>
+          </g>
+          <g>
+            <rect class="d-box" x="24" y="20" width="92" height="34" rx="17"/><text class="d-t-sm" x="70" y="42" text-anchor="middle">Estudiante</text>
+            <rect class="d-box" x="188" y="20" width="104" height="34" rx="8"/><text class="d-t-sm" x="240" y="42" text-anchor="middle">Frontend</text>
+            <rect class="d-box" x="392" y="20" width="76" height="34" rx="8"/><text class="d-t-sm" x="430" y="42" text-anchor="middle">BFF</text>
+            <rect class="d-box" x="560" y="20" width="120" height="34" rx="8"/><text class="d-t-sm" x="620" y="42" text-anchor="middle">Perfil 360</text>
+            <rect class="d-box" x="736" y="20" width="128" height="34" rx="8"/><text class="d-t-sm" x="800" y="42" text-anchor="middle">Integración</text>
+            <rect class="d-box" x="876" y="20" width="120" height="34" rx="8"/><text class="d-t-sm" x="936" y="42" text-anchor="middle">ERP financiero</text>
+          </g>
+
+          <path class="d-edge" marker-end="url(#s1)" d="M70,90 L238,90"/>
+          <text class="d-lab" x="74" y="84">abre Vista 360°</text>
+
+          <path class="d-edge" marker-end="url(#s1)" d="M240,126 L428,126"/>
+          <text class="d-lab" x="244" y="120">GET /students/:id/overview (JWT)</text>
+
+          <rect class="d-selfnote" x="432" y="142" width="184" height="24" rx="4"/>
+          <text class="d-lab" x="440" y="158">valida token · autoriza (dueño)</text>
+
+          <path class="d-edge" marker-end="url(#s1)" d="M430,202 L618,202"/>
+          <text class="d-lab" x="434" y="196">componer la vista</text>
+
+          <path class="d-edge" marker-end="url(#s1)" d="M620,238 L798,238"/>
+          <text class="d-lab" x="624" y="232">GET estado de cuenta</text>
+          <rect class="d-note-box" x="612" y="246" width="238" height="22" rx="4"/>
+          <text class="d-lab" x="622" y="261" style="fill:var(--accent)">timeout 2 s · circuit breaker</text>
+
+          <path class="d-edge" marker-end="url(#s1)" d="M802,300 L938,300"/>
+          <text class="d-lab" x="806" y="294">consulta saldo</text>
+
+          <path class="d-edge-async" marker-end="url(#s1a)" d="M938,334 L804,334"/>
+          <text class="d-lab" x="934" y="328" text-anchor="end">saldo actual</text>
+
+          <path class="d-edge-async" marker-end="url(#s1a)" d="M800,368 L624,368"/>
+          <text class="d-lab" x="796" y="362" text-anchor="end">saldo actual</text>
+
+          <rect class="d-selfnote" x="486" y="378" width="200" height="22" rx="4"/>
+          <text class="d-lab" x="496" y="393">no se persiste el saldo</text>
+
+          <path class="d-edge-async" marker-end="url(#s1a)" d="M620,430 L432,430"/>
+          <text class="d-lab" x="616" y="424" text-anchor="end">vista compuesta</text>
+
+          <path class="d-edge-async" marker-end="url(#s1a)" d="M430,464 L242,464"/>
+          <text class="d-lab" x="426" y="458" text-anchor="end">200 overview</text>
+
+          <rect class="d-note-box" x="150" y="482" width="476" height="26" rx="4"/>
+          <text class="d-lab" x="160" y="499" style="fill:var(--accent)">si el ERP no responde → respuesta parcial; el resto de la vista carga</text>
+        </svg>
+      </div></div>
+      <figcaption>
+        <b>Figura 2.</b> <b>Pull síncrono</b> contra la fuente. Es un dato
+        <span class="mono">read-your-own</span>, de baja cardinalidad por petición, que
+        exige exactitud sobre frescura de cache; no se justifica una arquitectura de eventos
+        para algo que se lee de forma puntual. El saldo no se persiste, y la resiliencia
+        evita que una demora del ERP tumbe toda la Vista 360°.
+      </figcaption>
+    </figure>
+
+    <h3>4.2 · Escenario 3.2.B — cambia la condición académica</h3>
+    <figure>
+      <div class="figframe"><div>
+        <svg viewBox="0 0 1040 430" role="img" aria-label="Secuencia del escenario 3.2.B: el ERP publica un evento AcademicStandingChanged en el broker; el servicio de Acompañamiento lo consume, evalúa la regla de alerta temprana, persiste el caso y publica su propio evento por Outbox; el broker entrega a otros procesos y a un sink que alimenta el data warehouse.">
+          <defs>
+            <marker id="s2" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="7" orient="auto"><polygon points="0 0, 10 4, 0 8" class="mk"/></marker>
+            <marker id="s2a" viewBox="0 0 10 8" refX="9" refY="4" markerWidth="8" markerHeight="7" orient="auto"><polygon points="0 0, 10 4, 0 8" class="mk-a"/></marker>
+          </defs>
+          <g class="d-life">
+            <line x1="70" y1="64" x2="70" y2="396"/>
+            <line x1="290" y1="64" x2="290" y2="396"/>
+            <line x1="510" y1="64" x2="510" y2="396"/>
+            <line x1="690" y1="64" x2="690" y2="396"/>
+            <line x1="850" y1="64" x2="850" y2="396"/>
+            <line x1="980" y1="64" x2="980" y2="396"/>
+          </g>
+          <g>
+            <rect class="d-box" x="34" y="22" width="72" height="34" rx="8"/><text class="d-t-sm" x="70" y="44" text-anchor="middle">ERP</text>
+            <rect class="d-box" x="222" y="22" width="136" height="34" rx="8"/><text class="d-t-sm" x="290" y="44" text-anchor="middle">Integración / Broker</text>
+            <rect class="d-box" x="438" y="22" width="144" height="34" rx="8"/><text class="d-t-sm" x="510" y="44" text-anchor="middle">Acompañamiento</text>
+            <rect class="d-box" x="626" y="22" width="128" height="34" rx="8"/><text class="d-t-sm" x="690" y="44" text-anchor="middle">BD Vista 360°</text>
+            <rect class="d-box" x="786" y="22" width="128" height="34" rx="8"/><text class="d-t-sm" x="850" y="44" text-anchor="middle">Otros procesos</text>
+            <rect class="d-box" x="912" y="22" width="122" height="34" rx="8"/><text class="d-t-sm" x="973" y="44" text-anchor="middle">Data Warehouse</text>
+          </g>
+
+          <path class="d-edge-async" marker-end="url(#s2a)" d="M70,96 L288,96"/>
+          <text class="d-lab" x="74" y="90" style="fill:var(--accent)">publica AcademicStandingChanged (eventId, studentId)</text>
+
+          <path class="d-edge-async" marker-end="url(#s2a)" d="M290,132 L508,132"/>
+          <text class="d-lab" x="294" y="126" style="fill:var(--accent)">entrega · at-least-once · orden por studentId</text>
+
+          <rect class="d-selfnote" x="510" y="148" width="220" height="22" rx="4"/>
+          <text class="d-lab" x="520" y="163">evalúa regla de alerta temprana</text>
+
+          <path class="d-edge" marker-end="url(#s2)" d="M510,196 L688,196"/>
+          <text class="d-lab" x="514" y="190">persiste alerta / caso de intervención</text>
+
+          <path class="d-edge-async" marker-end="url(#s2a)" d="M510,232 L292,232"/>
+          <text class="d-lab" x="506" y="226" text-anchor="end" style="fill:var(--accent)">publica EarlyAlertRaised (Outbox)</text>
+
+          <path class="d-edge-async" marker-end="url(#s2a)" d="M290,268 L848,268"/>
+          <text class="d-lab" x="294" y="262" style="fill:var(--accent)">entrega (becas, bienestar, …)</text>
+
+          <path class="d-edge-async" marker-end="url(#s2a)" d="M290,304 L978,304"/>
+          <text class="d-lab" x="294" y="298" style="fill:var(--accent)">sink / conector → tabla de hechos</text>
+
+          <rect class="d-note-box" x="360" y="344" width="560" height="24" rx="4"/>
+          <text class="d-lab" x="370" y="360" style="fill:var(--accent)">idempotencia por eventId · el DWH no consulta las bases transaccionales</text>
+        </svg>
+      </div></div>
+      <figcaption>
+        <b>Figura 3.</b> <b>Event-driven.</b> Hay varios consumidores desacoplados
+        (acompañamiento, otros procesos, DWH) y la plataforma debe reaccionar temprano. Un
+        evento se publica una vez y lo consume quien lo necesite. El <b>Outbox</b> garantiza
+        que el evento no se pierda aunque el broker esté caído; la idempotencia y el orden
+        por <span class="mono">studentId</span> hacen segura la entrega
+        <span class="mono">at-least-once</span>.
+      </figcaption>
+    </figure>
+  </section>
+
+  <section id="decisiones">
+    <div class="sec-head col">
+      <span class="sec-num">§ 5</span>
+      <h2>Decisiones más importantes</h2>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>Decisión</th><th>Fundamento</th></tr></thead>
+        <tbody>
+          <tr><td class="k">BFF que agrega en el backend</td><td>Una sola llamada del frontend; composición, resiliencia y autorización en un lugar; el cliente no conoce el ecosistema.</td></tr>
+          <tr><td class="k">Acompañamiento como fuente de verdad de lo nuevo, con BD propia (PostgreSQL)</td><td>Es la única información que Vista 360° posee; el resto lo lee de los sistemas fuente.</td></tr>
+          <tr><td class="k">Proyección académica local por eventos/CDC</td><td>Desacopla a Vista 360° de la disponibilidad del ERP para lecturas frecuentes y habilita el DWH. El servicio de la Parte 2 se construye sobre ella.</td></tr>
+          <tr><td class="k">Estado financiero siempre en vivo desde el ERP, sin persistir</td><td>Dato volátil y sensible; la exactitud manda.</td></tr>
+          <tr><td class="k">Síncrono para «leer ahora», asíncrono para «propagar cambios»</td><td>Cada estilo donde corresponde.</td></tr>
+          <tr><td class="k">Transactional Outbox para publicar eventos</td><td>Publicación confiable sin <span class="mono">dual write</span> entre la BD y el broker.</td></tr>
+          <tr><td class="k">DWH alimentado por eventos/CDC, no por consultas</td><td>El almacén analítico no se acopla a las bases transaccionales.</td></tr>
+          <tr><td class="k">Identidad delegada a la plataforma OIDC</td><td>Estándar abierto; Vista 360° es <span class="mono">resource server</span>, no IdP.</td></tr>
+          <tr><td class="k">Autorización a nivel de recurso, evaluada en el backend con el token</td><td>El frontend no es de fiar; la relación asesor ↔ estudiante se verifica contra datos propios.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="supuestos">
+    <div class="sec-head col">
+      <span class="sec-num">§ 6</span>
+      <h2>Supuestos declarados</h2>
+    </div>
+    <div class="col">
+      <p>El caso es abierto a propósito. Ante lo que no está definido, se asume lo razonable
+        y se declara:</p>
+    </div>
+    <div class="tablewrap">
+      <table>
+        <thead><tr><th>#</th><th>Supuesto</th></tr></thead>
+        <tbody>
+          <tr><td class="k">S1</td><td>La Plataforma de Integración expone las APIs mediadas del ERP y del LMS y ofrece un broker de eventos/mensajería.</td></tr>
+          <tr><td class="k">S2</td><td>El ERP puede emitir eventos o se le puede aplicar CDC; si no, hay <span class="mono">fallback</span> de polling/batch.</td></tr>
+          <tr><td class="k">S3</td><td>La Plataforma de Identidad soporta OIDC (Auth Code + PKCE) para usuarios y <span class="mono">client credentials</span> para servicios.</td></tr>
+          <tr><td class="k">S4</td><td>Vista 360° es <strong>solo lectura</strong> sobre ERP y LMS; solo es fuente de verdad de la información de acompañamiento.</td></tr>
+          <tr><td class="k">S5</td><td>La asignación asesor ↔ estudiante nace en RRHH/ERP y se sincroniza; mientras tanto se administra en Vista 360°.</td></tr>
+          <tr><td class="k">S6</td><td>Para la Parte 2, el servicio usa su propia BD con datos de ejemplo, que representa la proyección alimentada del ERP.</td></tr>
+          <tr><td class="k">S7</td><td>Volúmenes moderados (decenas de miles de estudiantes) → PostgreSQL es suficiente.</td></tr>
+          <tr><td class="k">S8</td><td>El frontend es una SPA web (posible app móvil a futuro).</td></tr>
+          <tr><td class="k">S9</td><td>Los datos académicos y financieros oficiales se leen del ERP; Vista 360° no los recalcula.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer class="col">
+    <p>
+      Servicio de la Parte 2 (código, especificación, pruebas y README):
+      <a href="https://github.com/DenilsonRios/vista-360">github.com/DenilsonRios/vista-360</a>.
+      Detalle del análisis en <span class="mono">docs/00-analisis-y-propuesta.md</span> ·
+      versión Mermaid de estos diagramas en <span class="mono">docs/01-arquitectura.md</span>.
+    </p>
+    <p><b>Uso de IA:</b> Claude (Claude Code) se usó para acelerar el análisis, la redacción
+      de este documento y el andamiaje del servicio; cada decisión de arquitectura,
+      el modelo de datos y el contrato fueron revisados y validados manualmente.</p>
+  </footer>
+
+</div>
