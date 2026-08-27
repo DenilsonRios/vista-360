@@ -16,11 +16,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Relación asesor de acompañamiento &rarr; estudiante asignado. Es la base de la
- * autorización del personal de acompañamiento (ver supuesto S5). Dato propio de
- * Vista 360&deg;: no existe en ningún sistema del ecosistema.
- */
 @Entity
 @Table(name = "advisor_assignment", uniqueConstraints = @UniqueConstraint(
         name = "uq_assignment", columnNames = {"advisor_subject", "student_id"}))
@@ -28,12 +23,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class AdvisorAssignment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Identificador del asesor en la plataforma de identidad (claim {@code sub} del token). */
     @Column(name = "advisor_subject", nullable = false)
     private String advisorSubject;
 

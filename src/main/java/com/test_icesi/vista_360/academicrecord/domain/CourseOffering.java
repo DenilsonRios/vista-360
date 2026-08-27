@@ -14,7 +14,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/** Oferta de una materia en un periodo concreto (grupo/sección). */
 @Entity
 @Table(name = "course_offering", uniqueConstraints = @UniqueConstraint(
         name = "uq_offering", columnNames = {"course_id", "term_id", "group_code"}))
@@ -22,7 +21,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class CourseOffering {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

@@ -32,7 +32,6 @@ import com.test_icesi.vista_360.config.SecurityConfig;
 @WebMvcTest(AcademicRecordController.class)
 @Import({SecurityConfig.class, ApiExceptionHandler.class})
 class AcademicRecordControllerTest {
-
     @Autowired
     MockMvc mvc;
 

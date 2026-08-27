@@ -18,7 +18,6 @@ import org.springframework.security.oauth2.jwt.Jwt;
 
 @ExtendWith(MockitoExtension.class)
 class AccessControlServiceTest {
-
     @Mock
     AdvisorAssignmentRepository assignments;
 

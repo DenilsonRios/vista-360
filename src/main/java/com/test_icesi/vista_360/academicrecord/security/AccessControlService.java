@@ -9,23 +9,9 @@ import org.springframework.stereotype.Service;
 
 import lombok.RequiredArgsConstructor;
 
-/**
- * Autorización a nivel de recurso para la consulta del registro académico.
- *
- * <ul>
- *   <li>Un <b>estudiante</b> solo puede ver su propia información: el {@code studentCode}
- *       de la ruta debe coincidir con el claim {@code student_id} de su token.</li>
- *   <li>Un <b>asesor de acompañamiento</b> solo puede ver a los estudiantes que tiene
- *       asignados (tabla {@code advisor_assignment}).</li>
- * </ul>
- *
- * La regla se evalúa en el backend con el identificador del token; nunca se confía en
- * un identificador enviado por el cliente.
- */
 @Service
 @RequiredArgsConstructor
 public class AccessControlService {
-
     static final String ROLE_STUDENT = "STUDENT";
     static final String ROLE_ADVISOR = "ADVISOR";
     static final String CLAIM_ROLES = "roles";

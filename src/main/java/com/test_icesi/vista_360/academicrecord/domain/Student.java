@@ -15,23 +15,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/**
- * Estudiante. En producción es un dato maestro del ERP; aquí se mantiene una
- * proyección local (ver supuesto S6 del documento de arquitectura) para poder
- * resolver el servicio sin depender del sistema de origen.
- */
 @Entity
 @Table(name = "student")
 @Getter
 @Setter
 @NoArgsConstructor
 public class Student {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    /** Identificador público del estudiante (código institucional). */
     @Column(nullable = false, unique = true)
     private String code;
 

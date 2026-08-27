@@ -1,6 +1,3 @@
--- Datos de ejemplo para desarrollo local y pruebas.
--- Representan la proyección académica que en producción se alimentaría del ERP (supuesto S6).
-
 insert into program (id, name, faculty) values
     (1, 'Ingeniería de Sistemas', 'Facultad de Ingeniería'),
     (2, 'Administración de Empresas', 'Facultad de Ciencias Administrativas');
@@ -25,17 +22,16 @@ insert into course_offering (id, course_id, term_id, group_code, professor_name)
     (2, 2, 2, '01', 'Pedro Salas'),
     (3, 3, 2, '02', 'Marta Ríos'),
     (4, 4, 2, '01', 'Jorge León'),
-    (5, 1, 1, '01', 'Ana Torres');   -- oferta del periodo anterior
+    (5, 1, 1, '01', 'Ana Torres');
 
 insert into enrollment (id, student_id, course_offering_id, status, enrolled_at, grade) values
     (1, 1, 1, 'ENROLLED',  TIMESTAMP '2025-07-15 09:00:00', 4.30),
     (2, 1, 2, 'ENROLLED',  TIMESTAMP '2025-07-15 09:05:00', null),
     (3, 1, 3, 'ENROLLED',  TIMESTAMP '2025-07-15 09:10:00', 3.80),
-    (4, 1, 5, 'COMPLETED', TIMESTAMP '2025-01-22 08:00:00', 4.50),  -- periodo 2025-1
+    (4, 1, 5, 'COMPLETED', TIMESTAMP '2025-01-22 08:00:00', 4.50),
     (5, 2, 4, 'ENROLLED',  TIMESTAMP '2025-07-16 10:00:00', 4.00),
-    (6, 3, 1, 'WITHDRAWN', TIMESTAMP '2025-07-15 11:00:00', null);  -- cancelada: no debe aparecer
+    (6, 3, 1, 'WITHDRAWN', TIMESTAMP '2025-07-15 11:00:00', null);
 
--- El asesor 'advisor-001' acompaña a Laura (1) y Ana (3), pero no a Carlos (2).
 insert into advisor_assignment (id, advisor_subject, student_id, active) values
     (1, 'advisor-001', 1, true),
     (2, 'advisor-001', 3, true);

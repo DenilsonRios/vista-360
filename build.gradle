@@ -22,27 +22,20 @@ ext {
 }
 
 dependencies {
-	// Web + persistencia
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
 	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 	implementation 'org.springframework.boot:spring-boot-starter-validation'
 
-	// Seguridad: valida el JWT emitido por la plataforma de identidad (OIDC)
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
 
-	// Observabilidad (health, métricas) — necesaria para la Parte 4
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-	// Configuración centralizada del ecosistema (opcional en local)
 	implementation 'org.springframework.cloud:spring-cloud-starter-config'
 
-	// Migraciones de esquema (en Spring Boot 4 la autoconfiguración de Flyway
-	// vive en su propio módulo, separado de spring-boot-autoconfigure)
 	implementation 'org.springframework.boot:spring-boot-flyway'
 	runtimeOnly 'org.flywaydb:flyway-database-postgresql'
 
-	// Drivers: PostgreSQL en entornos reales, H2 para local/pruebas
 	runtimeOnly 'org.postgresql:postgresql'
 	runtimeOnly 'com.h2database:h2'
 

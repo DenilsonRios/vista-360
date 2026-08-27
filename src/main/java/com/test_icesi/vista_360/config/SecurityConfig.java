@@ -10,15 +10,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.HttpStatusEntryPoint;
 
-/**
- * El servicio es un <i>OAuth2 Resource Server</i>: cada petición a {@code /api/**} debe
- * traer un JWT válido emitido por la plataforma de identidad. La autorización fina
- * (qué estudiante puede ver quién) se resuelve en {@code AccessControlService}.
- */
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
-
     @Bean
     SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http

@@ -16,20 +16,11 @@ import com.test_icesi.vista_360.academicrecord.service.AcademicRecordService;
 import jakarta.validation.constraints.Pattern;
 import lombok.RequiredArgsConstructor;
 
-/**
- * Servicio de registro académico.
- *
- * <pre>
- * GET /api/v1/students/{studentCode}/academic-record?term={termCode}
- * Authorization: Bearer &lt;JWT&gt;
- * </pre>
- */
 @RestController
 @RequestMapping("/api/v1/students")
 @RequiredArgsConstructor
 @Validated
 public class AcademicRecordController {
-
     private final AcademicRecordService academicRecordService;
     private final AccessControlService accessControlService;
 
@@ -42,7 +33,6 @@ public class AcademicRecordController {
             @Pattern(regexp = "\\d{4}-[12]", message = "el periodo debe tener el formato AAAA-1 o AAAA-2")
             String term,
             @AuthenticationPrincipal Jwt token) {
-
         accessControlService.checkCanViewStudent(studentCode, token);
         return academicRecordService.getAcademicRecord(studentCode, term);
     }

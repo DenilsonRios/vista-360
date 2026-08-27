@@ -30,7 +30,6 @@ import com.test_icesi.vista_360.academicrecord.domain.StudentStatus;
 
 @ExtendWith(MockitoExtension.class)
 class AcademicRecordServiceTest {
-
     @Mock StudentRepository students;
     @Mock AcademicTermRepository terms;
     @Mock EnrollmentRepository enrollments;
@@ -88,8 +87,6 @@ class AcademicRecordServiceTest {
         assertThatThrownBy(() -> service.getAcademicRecord("A00123456", "2099-1"))
                 .isInstanceOf(TermNotFoundException.class);
     }
-
-    // --- helpers -------------------------------------------------------------
 
     private static Student student(String code, String first, String last, String program) {
         Program p = new Program();

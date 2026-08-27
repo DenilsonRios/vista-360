@@ -7,11 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface EnrollmentRepository extends JpaRepository<Enrollment, Long> {
-
-    /**
-     * Materias que el estudiante tiene inscritas en un periodo (excluye las canceladas),
-     * con la oferta, la materia y el periodo ya cargados para evitar N+1.
-     */
     @Query("""
             select e from Enrollment e
               join fetch e.courseOffering o

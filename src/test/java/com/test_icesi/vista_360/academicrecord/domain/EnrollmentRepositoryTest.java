@@ -11,12 +11,10 @@ import org.springframework.boot.data.jpa.test.autoconfigure.DataJpaTest;
 import org.springframework.boot.flyway.autoconfigure.FlywayAutoConfiguration;
 import org.springframework.boot.jdbc.test.autoconfigure.AutoConfigureTestDatabase;
 
-/** Verifica la consulta del registro académico contra los datos semilla (H2 + Flyway). */
 @DataJpaTest
 @AutoConfigureTestDatabase(replace = AutoConfigureTestDatabase.Replace.NONE)
 @ImportAutoConfiguration(FlywayAutoConfiguration.class)
 class EnrollmentRepositoryTest {
-
     @Autowired
     EnrollmentRepository enrollments;
 
@@ -41,7 +39,6 @@ class EnrollmentRepositoryTest {
 
     @Test
     void withdrawnEnrollmentIsExcluded() {
-        // El estudiante A00111222 solo tiene una matrícula y está WITHDRAWN.
         List<Enrollment> record = enrollments.findAcademicRecord("A00111222", "2025-2");
 
         assertThat(record).isEmpty();

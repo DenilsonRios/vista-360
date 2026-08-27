@@ -12,10 +12,8 @@ import com.test_icesi.vista_360.academicrecord.service.TermNotFoundException;
 
 import jakarta.validation.ConstraintViolationException;
 
-/** Traduce las excepciones del servicio a respuestas RFC 9457 (application/problem+json). */
 @RestControllerAdvice
 public class ApiExceptionHandler {
-
     @ExceptionHandler({StudentNotFoundException.class, TermNotFoundException.class})
     public ProblemDetail handleNotFound(RuntimeException ex) {
         return problem(HttpStatus.NOT_FOUND, "Recurso no encontrado", ex.getMessage());

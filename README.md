@@ -6,8 +6,8 @@ Servicio propio y autónomo que, dado el identificador de un estudiante, devuelv
 materias que tiene **matriculadas** y la **nota** registrada en cada una para un periodo
 académico.
 
-> El análisis completo de la prueba, la arquitectura de la solución (Partes 1, 3 y 4) y los
-> supuestos declarados están en [`docs/00-analisis-y-propuesta.md`](docs/00-analisis-y-propuesta.md).
+> El diseño de arquitectura (Parte 1) y las respuestas de las Partes 3 y 4 se entregan como
+> documentos aparte. Este repositorio contiene el servicio de la Parte 2 y este README.
 
 ---
 
@@ -228,20 +228,13 @@ print((h + b"." + p + b"." + s).decode())
 ```
 src/main/java/com/test_icesi/vista_360
 ├── config
-│   ├── SecurityConfig            # cadena de filtros: /api/** requiere JWT
-│   └── HmacJwtConfig             # decodificador HS256 para local/pruebas
+│   ├── SecurityConfig
+│   └── HmacJwtConfig
 └── academicrecord
-    ├── api
-    │   ├── AcademicRecordController      # GET .../academic-record
-    │   ├── ApiExceptionHandler           # errores -> ProblemDetail
-    │   └── dto/                          # records de respuesta
-    ├── domain                            # entidades JPA + repositorios
-    ├── service
-    │   ├── AcademicRecordService         # lógica de consulta
-    │   └── StudentNotFoundException / TermNotFoundException
-    └── security
-        ├── AccessControlService          # autorización por recurso
-        └── AdvisorAssignment(+Repository)
+    ├── api            (AcademicRecordController, ApiExceptionHandler, dto/)
+    ├── domain         (entidades JPA + repositorios Spring Data)
+    ├── service        (AcademicRecordService + excepciones)
+    └── security       (AccessControlService, AdvisorAssignment + repositorio)
 ```
 
 ---
@@ -312,4 +305,4 @@ src/main/java/com/test_icesi/vista_360
 
 | Herramienta | Dónde | Propósito |
 |---|---|---|
-| Claude (Claude Code) | Análisis del enunciado, redacción de `docs/` y de este README, andamiaje del servicio y de las pruebas | Acelerar análisis y *boilerplate*. Cada decisión de arquitectura, el modelo de datos, el contrato y las reglas de autorización fueron revisados y validados manualmente (build + pruebas + `curl` de extremo a extremo). |
+| Claude (Claude Code) | Análisis del enunciado, redacción de este README, andamiaje del servicio y de las pruebas | Acelerar análisis y *boilerplate*. Cada decisión de arquitectura, el modelo de datos, el contrato y las reglas de autorización fueron revisados y validados manualmente (build + pruebas + `curl` de extremo a extremo). |

@@ -19,22 +19,13 @@ import com.test_icesi.vista_360.academicrecord.domain.StudentRepository;
 
 import lombok.RequiredArgsConstructor;
 
-/**
- * Resuelve, para un estudiante, las materias que tiene inscritas en un periodo
- * y la nota registrada en cada una.
- */
 @Service
 @RequiredArgsConstructor
 public class AcademicRecordService {
-
     private final StudentRepository students;
     private final AcademicTermRepository terms;
     private final EnrollmentRepository enrollments;
 
-    /**
-     * @param studentCode código institucional del estudiante (obligatorio)
-     * @param termCode    periodo a consultar; si es {@code null}/vacío se usa el periodo vigente
-     */
     @Transactional(readOnly = true)
     public AcademicRecordResponse getAcademicRecord(String studentCode, String termCode) {
         Student student = students.findByCode(studentCode)

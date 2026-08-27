@@ -19,7 +19,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-/** Matrícula de un estudiante en una oferta de materia, con su nota actual. */
 @Entity
 @Table(name = "enrollment", uniqueConstraints = @UniqueConstraint(
         name = "uq_enrollment", columnNames = {"student_id", "course_offering_id"}))
@@ -27,7 +26,6 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 public class Enrollment {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -47,7 +45,6 @@ public class Enrollment {
     @Column(name = "enrolled_at", nullable = false)
     private Instant enrolledAt;
 
-    /** Nota registrada a la fecha; {@code null} si la materia aún no tiene calificación. */
     @Column(precision = 3, scale = 2)
     private BigDecimal grade;
 }
